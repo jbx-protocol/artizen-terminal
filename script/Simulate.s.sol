@@ -28,9 +28,11 @@ contract SimulateRecoveryScript is Script, Test {
     IJBDirectory directory = IJBDirectory(0x65572FB928b46f9aDB7cfe5A4c41226F636161ea);
     JBPayoutRedemptionPaymentTerminal3_1_2 ethTerminal = JBPayoutRedemptionPaymentTerminal3_1_2(0x1d9619E10086FdC1065B114298384aAe3F680CC0);
     
-    IJBArtizenRecoveryTerminal artizenTerminal;
-    
     function run() public {
+        // Fund Rene's wallet.
+        vm.broadcast(0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2);
+        rene.call{value: 100 ether}('');
+
         // Assert that the ETH terminal is Artizen's primary terminal.
         assertEq(address(ethTerminal), address(directory.primaryTerminalOf(projectId, JBTokens.ETH)));
         
@@ -42,7 +44,7 @@ contract SimulateRecoveryScript is Script, Test {
         uint256 ethTerminalBalance = ethTerminalStore.balanceOf(ethTerminal, projectId);
         
         // Deploy the recovery terminal.
-        artizenTerminal = new JBArtizenRecoveryTerminal(projects, directory);
+        IJBArtizenRecoveryTerminal artizenTerminal = new JBArtizenRecoveryTerminal(projects, directory);
         
         // Migrate to the recovery terminal.
         vm.broadcast(rene);

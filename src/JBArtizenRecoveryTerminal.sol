@@ -166,7 +166,7 @@ contract JBArtizenRecoveryTerminal is
 
         // Send the fee.
         // If this terminal's token is ETH, send it in msg.value.
-        _terminal.pay{value: _amount}(
+        _terminal.pay{value: feeAmount}(
             _FEE_BENEFICIARY_PROJECT_ID,
             feeAmount,
             token,

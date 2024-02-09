@@ -81,7 +81,7 @@ contract JBArtizenRecoveryTerminal is
     {
         revert();
     }
-
+    
     /// @notice Distribute all funds from this terminal to Artizen's multisig.
     /// @param _projectId The ID of the project having its payouts distributed. This must be 587 (Artizen).
     /// @param _amount Not used.
@@ -166,7 +166,7 @@ contract JBArtizenRecoveryTerminal is
 
         // Send the fee.
         // If this terminal's token is ETH, send it in msg.value.
-        _terminal.pay{value: _amount}(
+        _terminal.pay{value: feeAmount}(
             _FEE_BENEFICIARY_PROJECT_ID,
             feeAmount,
             token,

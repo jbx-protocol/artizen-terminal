@@ -3,8 +3,6 @@ pragma solidity ^0.8.16;
 
 import {Address} from "openzeppelin-contracts/contracts/utils/Address.sol";
 import {IJBDirectory} from "@juicebox/interfaces/IJBDirectory.sol";
-import {IJBPayoutRedemptionPaymentTerminal3_1_1} from
-    "@juicebox/interfaces/IJBPayoutRedemptionPaymentTerminal3_1_1.sol";
 import {IJBPaymentTerminal} from "@juicebox/interfaces/IJBPaymentTerminal.sol";
 import {IJBPayoutTerminal3_1} from "@juicebox/interfaces/IJBPayoutTerminal3_1.sol";
 import {IJBProjects} from "@juicebox/interfaces/IJBProjects.sol";
@@ -14,10 +12,12 @@ import {JBCurrencies} from "@juicebox/libraries/JBCurrencies.sol";
 import {JBFundingCycle} from "@juicebox/structs/JBFundingCycle.sol";
 import {JBSingleTokenPaymentTerminal} from "@juicebox/abstract/JBSingleTokenPaymentTerminal.sol";
 
+import {IJBArtizenRecoveryTerminal} from "./IJBArtizenRecoveryTerminal.sol";
+
 /// @notice Emergency recovery terminal for Artizen.
-abstract contract JBArtizenRecoveryTerminal is
+contract JBArtizenRecoveryTerminal is
     JBSingleTokenPaymentTerminal,
-    IJBPayoutRedemptionPaymentTerminal3_1_1_e
+    IJBArtizenRecoveryTerminal
 {
     //*********************************************************************//
     // --------------------- internal stored constants ------------------- //

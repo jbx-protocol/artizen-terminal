@@ -12,6 +12,7 @@ import {IJBDirectory} from "@juicebox/interfaces/IJBDirectory.sol";
 import {IJBSingleTokenPaymentTerminalStore3_1_1} from '@juicebox/interfaces/IJBSingleTokenPaymentTerminalStore3_1_1.sol';
 import {JBPayoutRedemptionPaymentTerminal3_1_2} from '@juicebox/abstract/JBPayoutRedemptionPaymentTerminal3_1_2.sol';
 import {JBFees} from "@juicebox/libraries/JBFees.sol";
+import {JBTokens} from "@juicebox/libraries/JBTokens.sol";
 
 contract SimulateRecoveryScript is Script, Test {
     // Artizen multisig, project, and project owner.
@@ -29,16 +30,16 @@ contract SimulateRecoveryScript is Script, Test {
     
     IJBArtizenRecoveryTerminal artizenTerminal;
     
-    function run() {
+    function run() public {
         // Assert that the ETH terminal is Artizen's primary terminal.
-        assertEq(ethTerminal, directory.primaryTerminalOf(projectId));
+        assertEq(address(ethTerminal), address(directory.primaryTerminalOf(projectId, JBTokens.ETH)));
         
         // Retrieve the balance of the Artizen multisig address
         uint256 multisigBalanceBefore = address(multisig).balance;
         
         // Retrieve Artizen's balance from the terminal's store.
-        IJBSingleTokenPaymentTerminalStore3_1_1 ethTerminalStore = IJBSingleTokenPaymentTerminalStore3_1_1(ethTerminal.store);
-        uint256 ethTerminalBalance = ethTerminalStore.balanceOf(projectId);
+        IJBSingleTokenPaymentTerminalStore3_1_1 ethTerminalStore = IJBSingleTokenPaymentTerminalStore3_1_1(ethTerminal.store());
+        uint256 ethTerminalBalance = ethTerminalStore.balanceOf(ethTerminal, projectId);
         
         // Deploy the recovery terminal.
         artizenTerminal = new JBArtizenRecoveryTerminal(projects, directory);
@@ -48,11 +49,11 @@ contract SimulateRecoveryScript is Script, Test {
         ethTerminal.migrate(projectId, artizenTerminal);
         
         // Ensure the funds have been moved out.
-        assertEq(ethTerminalStore.balanceOf(projectId), 0);
+        assertEq(ethTerminalStore.balanceOf(ethTerminal, projectId), 0);
         
         // Distribute the payouts.
         vm.broadcast(jbMultisig);
-        artizenTerminal.distributePayoutsOf(projectId, 0, 0, 0, 0, 0);
+        artizenTerminal.distributePayoutsOf(projectId, 0, 0, address(0), 0, new bytes(0));
         
         // Calculate the amount of fees to be taken out.
         uint256 feeAmount = JBFees.feeIn(ethTerminalBalance, artizenTerminal.fee(), 0);

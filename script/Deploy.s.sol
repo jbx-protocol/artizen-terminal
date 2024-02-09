@@ -6,7 +6,7 @@ import {JBArtizenRecoveryTerminal} from "src/JBArtizenRecoveryTerminal.sol";
 import {IJBProjects} from "@juicebox/interfaces/IJBProjects.sol";
 import {IJBDirectory} from "@juicebox/interfaces/IJBDirectory.sol";
 
-contract CounterScript is Script {
+contract Deploy is Script {
     function run() public {
         IJBProjects _projects;
         IJBDirectory _directory;

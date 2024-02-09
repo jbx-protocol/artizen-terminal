@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import {IJBDirectory} from './IJBDirectory.sol';
-import {IJBPaymentTerminal} from './IJBPaymentTerminal.sol';
-import {IJBPayoutTerminal3_1} from './IJBPayoutTerminal3_1.sol';
-import {IJBProjects} from './IJBProjects.sol';
+import {IJBDirectory} from '@juicebox/interfaces/IJBDirectory.sol';
+import {IJBPaymentTerminal} from '@juicebox/interfaces/IJBPaymentTerminal.sol';
+import {IJBPayoutTerminal3_1} from '@juicebox/interfaces/IJBPayoutTerminal3_1.sol';
+import {IJBProjects} from '@juicebox/interfaces/IJBProjects.sol';
 
-interface IJBPayoutRedemptionPaymentTerminal3_1_1_e is
+interface IJBArtizenRecoveryTerminal is
   IJBPaymentTerminal,
   IJBPayoutTerminal3_1
 {

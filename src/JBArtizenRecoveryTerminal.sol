@@ -48,9 +48,7 @@ abstract contract JBArtizenRecoveryTerminal is
     // ------------------------- external views -------------------------- //
     //*********************************************************************//
 
-    /// @notice Gets the current overflowed amount in this terminal for a specified project, in terms of ETH.
-    /// @dev The current overflow is represented as a fixed point number with 18 decimals.
-    /// @return The current amount of ETH overflow that project has in this terminal, as a fixed point number with 18 decimals.
+    /// @notice Empty implementation to satisfy interface.
     function currentEthOverflowOf(uint256) external view virtual override returns (uint256) {
         return 0;
     }
@@ -73,8 +71,7 @@ abstract contract JBArtizenRecoveryTerminal is
     // ---------------------- external transactions ---------------------- //
     //*********************************************************************//
 
-    /// @notice Contribute tokens to a project.
-    /// @return The number of tokens minted for the beneficiary, as a fixed point number with 18 decimals.
+    /// @notice Empty implementation to satisfy interface.
     function pay(uint256, uint256, address, address, uint256, bool, string calldata, bytes calldata)
         external
         payable
@@ -85,17 +82,14 @@ abstract contract JBArtizenRecoveryTerminal is
         revert();
     }
 
-    /// @notice Distributes payouts for a project with the distribution limit of its current funding cycle.
-    /// @dev Payouts are sent to the preprogrammed splits. Any leftover is sent to the project's owner.
-    /// @dev Anyone can distribute payouts on a project's behalf. The project can preconfigure a wildcard split that is used to send funds to msg.sender. This can be used to incentivize calling this function.
-    /// @dev All funds distributed outside of this contract or any feeless terminals incure the protocol fee.
-    /// @param _projectId The ID of the project having its payouts distributed.
-    /// @param _amount The amount of terminal tokens to distribute, as a fixed point number with same number of decimals as this terminal.
-    /// @param _currency The expected currency of the amount being distributed. Must match the project's current funding cycle's distribution limit currency.
-    /// @param _token The token being distributed. This terminal ignores this property since it only manages one token.
-    /// @param _minReturnedTokens The minimum number of terminal tokens that the `_amount` should be valued at in terms of this terminal's currency, as a fixed point number with the same number of decimals as this terminal.
-    /// @param _metadata Bytes to send along to the emitted event, if provided.
-    /// @return netLeftoverDistributionAmount The amount that was sent to the project owner, as a fixed point number with the same amount of decimals as this terminal.
+    /// @notice Distribute all funds from this terminal to Artizen's multisig.
+    /// @param _projectId The ID of the project having its payouts distributed. This must be 587 (Artizen).
+    /// @param _amount Not used.
+    /// @param _currency Not used.
+    /// @param _token Not used.
+    /// @param _minReturnedTokens Not used.
+    /// @param _metadata Not used.
+    /// @return netLeftoverDistributionAmount The amount that was sent to the Artizen multisig., as a fixed point number with the same amount of decimals as this terminal.
     function distributePayoutsOf(
         uint256 _projectId,
         uint256 _amount,
@@ -129,12 +123,12 @@ abstract contract JBArtizenRecoveryTerminal is
         return _distributedAmount - _feeTaken;
     }
 
-    /// @notice Receives funds belonging to the specified project.
-    /// @param _projectId The ID of the project to which the funds received belong.
-    /// @param _amount The amount of tokens to add, as a fixed point number with the same number of decimals as this terminal. If this is an ETH terminal, this is ignored and msg.value is used instead.
-    /// @param _token The token being paid. This terminal ignores this property since it only manages one currency.
-    /// @param _memo A memo to pass along to the emitted event.
-    /// @param _metadata Extra data to pass along to the emitted event.
+    /// @notice Receives funds belonging to the specified project. Must be 587 (Artizen).
+    /// @param _projectId The ID of the project to which the funds received belong. Must be 587 (Artizen).
+    /// @param _amount Not used.
+    /// @param _token Not used.
+    /// @param _memo Not used.
+    /// @param _metadata Not used.
     function addToBalanceOf(
         uint256 _projectId,
         uint256 _amount,

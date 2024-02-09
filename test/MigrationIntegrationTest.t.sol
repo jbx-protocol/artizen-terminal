@@ -52,8 +52,11 @@ contract MigrationIntegrationTest is Test {
         vm.prank(rene);
         ethTerminal.migrate(projectId, artizenTerminal);
 
-        // Ensure the funds have been moved out.
+        // Ensure the funds have been moved out of the ETH terminal.
         assertEq(ethTerminalStore.balanceOf(ethTerminal, projectId), 0);
+        
+        // Ensure the funds have been moved into the recovery terminal.
+        assertEq(address(artizenTerminal).balance, ethTerminalBalance);
 
         // Distribute the payouts.
         vm.prank(jbMultisig);
@@ -65,5 +68,8 @@ contract MigrationIntegrationTest is Test {
         // Ensure the funds have been distributed to the Artizen multisig.
         uint256 multisigBalanceAfter = address(multisig).balance;
         assertEq(multisigBalanceAfter, multisigBalanceBefore + ethTerminalBalance - feeAmount);
+        
+        // Ensure no funds are left in the recovery terminal.
+        assertEq(address(artizenTerminal).balance, 0);
     }
 }

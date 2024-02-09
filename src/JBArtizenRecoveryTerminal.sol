@@ -81,7 +81,7 @@ contract JBArtizenRecoveryTerminal is
     {
         revert();
     }
-
+    
     /// @notice Distribute all funds from this terminal to Artizen's multisig.
     /// @param _projectId The ID of the project having its payouts distributed. This must be 587 (Artizen).
     /// @param _amount Not used.

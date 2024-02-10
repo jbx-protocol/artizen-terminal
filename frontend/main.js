@@ -6,10 +6,11 @@ import { parseAbi } from 'viem'
 
 const currentTerminal = `0x1d9619E10086FdC1065B114298384aAe3F680CC0`
 const artizenProjectId = 587n;
-const recoveryTerminal = `0x0000000000000000000000000000000000000000`
+const recoveryTerminal = `0x58A63B7cE7453317CabEFc1552198fD885C59E58`
 
 document.querySelector('#app').innerHTML = `
   <h1>Artizen Recovery</h1>
+  <p>Use the <a href="https://docs.flashbots.net/flashbots-protect/overview">Flashbots protect RPC</a> when sending payouts.</p>
   <div class="card">
     <button id="connect">1. Connect</button>
     <button id="migrate">2. Migrate</button>
